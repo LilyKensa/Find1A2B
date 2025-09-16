@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+:root {
+  --default-font-family: "PT Mono";
+}
+
+html, body, #app {
+  @apply w-dvw h-dvh;
+}
+
+#app {
+  @apply 
+    bg-zinc-900 text-zinc-200
+    flex flex-col items-center justify-center;
+}
+
+input, button {
+  @apply 
+    focus-visible:outline-none
+    will-change-transform transition duration-100
+    ring-2 ring-zinc-400 hover:ring-zinc-100 
+    rounded-full p-1;
+}
+
+input {
+  @apply focus:ring-zinc-100 px-3;
+}
+
+.reactive {
+  @apply 
+    cursor-pointer
+    will-change-transform transition duration-100
+    active:scale-95;
+}
+
+.scroll-bar {
+  &::-webkit-scrollbar {
+    @apply bg-transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    @apply 
+      bg-zinc-600 rounded-full 
+      border-2 py-4 border-transparent
+      bg-clip-content;
+  }
+}
+
+.container {
+  @apply 
+    w-6/12 h-10/12 p-4 
+    flex flex-col gap-4 items-center;
+}
+
+button svg {
+  @apply size-6;
+}
+
+.top {
+  .row {
+    @apply flex gap-2 px-16;
+  }
+}
+
+.guess-input {
+  @apply w-48;
+}
+
+.result-input {
+  @apply w-24;
+}
+
+.bottom {
+  @apply 
+    flex-grow w-full
+    grid grid-cols-2 gap-4;
+}
+
+.list {
+  @apply flex flex-col;
+
+  .title {
+    @apply text-center;
+  }
+}
+
+.list-wrapper {
+  @apply flex-grow border-2 border-zinc-400 rounded-2xl mt-1;
+
+  > * {
+    @apply overflow-y-scroll h-full px-1;
+  }
+}
+
+.guesses-list .list-wrapper {
+  @apply py-2;
+}
+
+.candidates-list .list-wrapper {
+  @apply px-1 py-2;
+
+  span {
+    @apply inline-block px-1 overflow-hidden transition-transform duration-200;
+  }
+}
+
+table {
+  th, td {
+    @apply px-1;
+  }
+
+  td:first-child::before {
+    content: "‧"
+  }
+}
