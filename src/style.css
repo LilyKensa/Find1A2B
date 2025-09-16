@@ -48,7 +48,7 @@ input {
 
 .container {
   @apply 
-    w-6/12 h-10/12 p-4 
+    lg:w-6/12 sm:w-10/12 w-full sm:h-10/12 h-full p-4 
     flex flex-col gap-4 items-center;
 }
 
@@ -58,7 +58,7 @@ button svg {
 
 .top {
   .row {
-    @apply flex gap-2 px-16;
+    @apply flex gap-2 sm:px-16;
   }
 }
 
@@ -73,19 +73,37 @@ button svg {
 .bottom {
   @apply 
     flex-grow w-full
-    grid grid-cols-2 gap-4;
+    grid grid-cols-2 sm:gap-4;
 }
 
 .list {
   @apply flex flex-col;
 
   .title {
-    @apply text-center;
+    @apply flex flex-col items-center;
+
+    @media (max-width: 768px) {
+      @apply cursor-pointer;
+
+      &:has(+ .show)::after {
+        content: "";
+        @apply block w-9/12 h-0.5 bg-zinc-400 rounded-full;
+      }
+    }
   }
 }
 
 .list-wrapper {
-  @apply flex-grow border-2 border-zinc-400 rounded-2xl mt-1;
+  @apply flex-grow border-2 border-zinc-400 rounded-2xl mt-1 hidden;
+
+  &.show {
+    @apply block;
+  }
+
+  @media (max-width: 768px) {
+    width: 200%;
+    margin-top: 12px;
+  }
 
   > * {
     @apply overflow-y-scroll h-full px-1;
@@ -99,6 +117,10 @@ button svg {
 .candidates-list .list-wrapper {
   @apply px-1 py-2;
 
+  @media (max-width: 768px) {
+    transform: translate(-50%);
+  }
+
   span {
     @apply inline-block px-1 overflow-hidden transition-transform duration-200;
   }
@@ -110,6 +132,6 @@ table {
   }
 
   td:first-child::before {
-    content: "‧"
+    content: "‧ "
   }
 }

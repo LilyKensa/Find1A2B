@@ -39,9 +39,13 @@ let guesses: Guess[] = [];
 let candidates: string[] = [];
 let length: number;
 
+let page = 0;
+
 let guessInput: HTMLInputElement, resultInput: HTMLInputElement;
 let addButton: HTMLButtonElement;
 
+let guessesList: HTMLDivElement, candidatesList: HTMLDivElement;
+let guessesTitle: HTMLDivElement, candidatesTitle: HTMLDivElement;
 let guessesAppendTarget: HTMLTableSectionElement, candidatesAppendTarget: HTMLDivElement;
 
 function addGuess() {
@@ -204,17 +208,46 @@ function reflectCandidates() {
   }
 }
 
+function handleResize() {
+  if (window.innerWidth > 768) {
+    guessesList.classList.add("show");
+    candidatesList.classList.add("show");
+  }
+  else {
+    guessesList.classList[page === 0 ? "add" : "remove"]("show");
+    candidatesList.classList[page === 1 ? "add" : "remove"]("show");
+  }
+}
+
 function main() {
   guessInput = document.querySelector(".guess-input")!;
   resultInput = document.querySelector(".result-input")!;
   addButton = document.querySelector(".add-button")!;
 
+  guessesList = document.querySelector(".guesses-list .list-wrapper")!;
+  candidatesList = document.querySelector(".candidates-list .list-wrapper")!;
+
+  guessesTitle = document.querySelector(".guesses-list .title")!;
+  candidatesTitle = document.querySelector(".candidates-list .title")!;
+
   guessesAppendTarget = document.querySelector(".guesses-list tbody")!;
   candidatesAppendTarget = document.querySelector(".candidates-list .list-wrapper > *")!;
-  let candidatesList = candidatesAppendTarget.parentElement!;
+
   candidatesList.style.height = candidatesList.getBoundingClientRect().height + "px";
 
   addButton.addEventListener("click", addGuess);
+
+  guessesTitle.addEventListener("click", () => {
+    page = 0;
+    handleResize();
+  });
+  candidatesTitle.addEventListener("click", () => {
+    page = 1;
+    handleResize();
+  });
+
+  handleResize();
+  window.addEventListener("resize", handleResize);
 }
 
 window.addEventListener("load", main);
