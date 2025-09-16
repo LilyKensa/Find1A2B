@@ -63,6 +63,9 @@ function addGuess() {
 
   guesses.push({ value, result });
   refresh();
+
+  page = 1;
+  handleResize();
 }
 
 function refresh() {
@@ -209,7 +212,7 @@ function reflectCandidates() {
 }
 
 function handleResize() {
-  if (window.innerWidth > 768) {
+  if (window.innerWidth >= 768) {
     guessesList.classList.add("show");
     candidatesList.classList.add("show");
   }

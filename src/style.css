@@ -33,16 +33,18 @@ input {
     active:scale-95;
 }
 
-.scroll-bar {
-  &::-webkit-scrollbar {
-    @apply bg-transparent;
-  }
+@media (min-width: 768px) {
+  .scroll-bar {
+    &::-webkit-scrollbar {
+      @apply w-3 bg-transparent;
+    }
 
-  &::-webkit-scrollbar-thumb {
-    @apply 
-      bg-zinc-600 rounded-full 
-      border-2 py-4 border-transparent
-      bg-clip-content;
+    &::-webkit-scrollbar-thumb {
+      @apply 
+        bg-zinc-600 rounded-full 
+        border-2 py-4 border-transparent
+        bg-clip-content;
+    }
   }
 }
 
@@ -73,7 +75,7 @@ button svg {
 .bottom {
   @apply 
     flex-grow w-full
-    grid grid-cols-2 sm:gap-4;
+    grid grid-cols-2 md:gap-4;
 }
 
 .list {
@@ -82,7 +84,7 @@ button svg {
   .title {
     @apply flex flex-col items-center;
 
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       @apply cursor-pointer;
 
       &:has(+ .show)::after {
@@ -100,7 +102,7 @@ button svg {
     @apply block;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     width: 200%;
     margin-top: 12px;
   }
