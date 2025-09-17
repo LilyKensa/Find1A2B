@@ -107,8 +107,8 @@ button svg {
     margin-top: 12px;
   }
 
-  > * {
-    @apply overflow-y-scroll h-full px-1;
+  .scroll-bar {
+    @apply overflow-x-hidden overflow-y-scroll h-full px-1;
   }
 }
 
@@ -117,14 +117,35 @@ button svg {
 }
 
 .candidates-list .list-wrapper {
-  @apply px-1 py-2;
+  @apply relative overflow-hidden px-1 py-2;
 
   @media (max-width: 768px) {
     transform: translate(-50%);
   }
 
   span {
-    @apply inline-block px-1 overflow-hidden transition-transform duration-200;
+    @apply inline-block px-1 overflow-hidden transition-all;
+    transition-duration: 4000ms;
+
+    &.removed {
+      @apply transition-none;
+    }
+  }
+
+  .loading-overlay {
+    @apply 
+      hidden
+      absolute left-0 top-0 w-full h-full 
+      items-center justify-center
+      bg-zinc-600/20;
+
+    &.show {
+      @apply flex;
+    }
+
+    .spinner {
+      @apply size-16 animate-spin;
+    }
   }
 }
 
