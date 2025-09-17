@@ -151,6 +151,14 @@ async function reflectCandidates(candidates: string[]) {
     child.style.left = rects[i].left + "px";
     child.style.top = rects[i].top + "px";
   }
+
+  setTimeout(() => {
+    for (let child of children) {
+      child.style.position = "";
+      child.style.left = "";
+      child.style.top = "";
+    }
+  }, 500);
 }
 
 function handleResize() {
