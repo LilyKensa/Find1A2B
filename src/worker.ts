@@ -36,7 +36,6 @@ let length: number;
 
 addJob(WorkerEvent.AddGuess, WorkerEvent.AddGuessDone, async (data) => {
   guesses.push(data.guess);
-  console.log(guesses);
 });
 
 async function initializeCandidates() {

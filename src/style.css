@@ -87,9 +87,14 @@ button svg {
     @media (max-width: 767px) {
       @apply cursor-pointer;
 
-      &:has(+ .show)::after {
+      &::after {
         content: "";
-        @apply block w-9/12 h-0.5 bg-zinc-400 rounded-full;
+        @apply 
+          block h-0.5 bg-zinc-400 rounded-full 
+          transition-all duration-200 opacity-0 w-4/12;
+      }
+      &:has(+ .show)::after {
+        @apply opacity-100 w-9/12;
       }
     }
   }
@@ -124,23 +129,26 @@ button svg {
   }
 
   span {
-    @apply inline-block px-1 overflow-hidden transition-all;
-    transition-duration: 4000ms;
+    @apply inline-block px-1 overflow-hidden transition-all duration-500;
 
     &.removed {
       @apply transition-none;
     }
   }
 
+  .scroll-bar {
+    @apply relative;
+  }
+
   .loading-overlay {
     @apply 
-      hidden
+      opacity-0 pointer-events-none
       absolute left-0 top-0 w-full h-full 
-      items-center justify-center
+      flex items-center justify-center
       bg-zinc-600/20;
 
     &.show {
-      @apply flex;
+      @apply opacity-100;
     }
 
     .spinner {
@@ -154,7 +162,12 @@ table {
     @apply px-1;
   }
 
-  td:first-child::before {
-    content: "‧ "
+  tr {
+    @apply flex items-center;
+
+    &::before {
+      content: "";
+      @apply inline-block rounded-full size-1 bg-zinc-300 ml-1 mr-2;
+    }
   }
 }

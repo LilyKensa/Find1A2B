@@ -20,7 +20,7 @@ export class Result {
   }
 
   toString() {
-    return `${this.a}A${this.b}B`;
+    return (this.a ? this.a + "A" : "  ") + (this.b ? this.b + "B" : "  ");
   }
 
   equals(that: Result) {

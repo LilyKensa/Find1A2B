@@ -88,73 +88,69 @@ async function reflectGuesses() {
 }
 
 async function reflectCandidates(candidates: string[]) {
-  let isFirst = false;
+  let isFirst = !candidatesAppendTarget.children.length;
 
-  for (let c of candidates) {
-    let id = `candidate-${c}`;
-    let el = document.querySelector("#" + id);
-    
-    if (!el) {
-      isFirst = true;
-
-      el = document.createElement("span");
-      el.id = id;
+  if (isFirst) {
+    for (let c of candidates) {
+      let el = document.createElement("span");
+      el.id = `candidate-${c}`;
       el.classList.add("candidate");
       el.textContent = c;
       candidatesAppendTarget.appendChild(el);
     }
+    return;
   }
-
-  if (isFirst) return;
 
   let lookup = new Set<string>(candidates);
 
-  let children: HTMLSpanElement[] = [];
-  function getRects() {
-    children = [...candidatesAppendTarget.children] as HTMLSpanElement[];
-    return children.map(e => e.getBoundingClientRect());
-  };
+  let getChildren = () => [...candidatesAppendTarget.children] as HTMLSpanElement[];
+  let children = getChildren();
 
-  let oldRects = getRects();
+  interface Rect {
+    left: number;
+    top: number;
+  }
+
+  let oldRects: Rect[] = [], rects: Rect[] = [];
+
+  for (let child of children) {
+    if (lookup.has(child.id.split("-")[1])) {
+      oldRects.push({ 
+        left: child.offsetLeft, 
+        top: child.offsetTop 
+      });
+    }
+  }
+
   for (let child of children) {
     if (!lookup.has(child.id.split("-")[1])) {
-      child.classList.add("removed");
-
-      child.style.width = "0px";
-      child.style.padding = "0px";
-      child.style.fontSize = "0px";
+      child.remove();
     }
   }
 
-  await new Promise(requestAnimationFrame);
-
-  let rects = getRects();
-  let i = 0;
-  for (let [ oi, child ] of children.entries()) {
-    if (child.classList.contains("removed")) continue;
-
-    const dx = oldRects[oi]!.left - rects[i]!.left || 0;
-    const dy = oldRects[oi]!.top  - rects[i]!.top  || 0;
-
-    child.style.transition = "none";
-    child.style.transform = `translate(${dx}px, ${dy}px)`;
-
-    i++;
-  }
-
-  await new Promise(requestAnimationFrame);
+  children = getChildren();
 
   for (let child of children) {
-    child.style.transition = "";
-    child.style.transform = "";
+    rects.push({ 
+      left: child.offsetLeft, 
+      top: child.offsetTop 
+    });
   }
 
-  setTimeout(() => {
-    for (let child of children) {
-      if (child.classList.contains("removed"))
-        child.remove();
-    }
-  }, 4000);
+  for (let [ oi, child ] of children.entries()) {
+    child.style.transition = "none";
+    child.style.position = "absolute";
+    child.style.left = oldRects[oi].left + "px";
+    child.style.top = oldRects[oi].top + "px";
+  }
+
+  await new Promise(window.requestAnimationFrame);
+
+  for (let [i, child] of children.entries()) {
+    child.style.transition = "";
+    child.style.left = rects[i].left + "px";
+    child.style.top = rects[i].top + "px";
+  }
 }
 
 function handleResize() {
